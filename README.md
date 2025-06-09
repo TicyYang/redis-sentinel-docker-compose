@@ -90,7 +90,7 @@ cp redis.conf redis/redis-3.conf
 
 ### 6. Edit each Redis config file
 Modify the following lines in each file:
-```toml
+```conf
 # bind 127.0.0.1 ::1   ← Comment this out
 
 protected-mode no
@@ -115,7 +115,7 @@ vi sentinel/sentinel-3/sentinel-3.conf
 ```
 
 Each file should contain:
-```toml
+```conf
 port 26379
 
 sentinel monitor mymaster <your_host_IP> 6380 2
