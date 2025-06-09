@@ -1,0 +1,84 @@
+services:
+  redis-1:
+    image: redis:7.2.4
+    container_name: redis-1
+    user: 1000:1000
+    ports:
+      - 6380:6379
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis/redis-1.conf:/usr/local/etc/redis/redis.conf
+      - ./data/:/data
+    environment:
+      - TZ=Asia/Taipei
+
+  redis-2:
+    image: redis:7.2.4
+    container_name: redis-2
+    user: 1000:1000
+    ports:
+      - 6381:6379
+    command: redis-server /usr/local/etc/redis/redis.conf --replicaof redis-1 6379
+    volumes:
+      - ./redis/redis-2.conf:/usr/local/etc/redis/redis.conf
+      - ./data/:/data
+    environment:
+      - TZ=Asia/Taipei
+
+  redis-3:
+    image: redis:7.2.4
+    container_name: redis-3
+    user: 1000:1000
+    ports:
+      - 6382:6379
+    command: redis-server /usr/local/etc/redis/redis.conf --replicaof redis-1 6379
+    volumes:
+      - ./redis/redis-3.conf:/usr/local/etc/redis/redis.conf
+      - ./data/:/data
+    environment:
+      - TZ=Asia/Taipei
+
+  sentinel-1:
+    image: redis:7.2.4
+    container_name: sentinel-1
+    user: 1000:1000
+    ports:
+      - 26379:26379
+    command: redis-sentinel /usr/local/etc/redis/sentinel-1.conf
+    volumes:
+      - ./sentinel/sentinel-1:/usr/local/etc/redis
+      - ./data/:/data
+    environment:
+      - TZ=Asia/Taipei
+
+  sentinel-2:
+    image: redis:7.2.4
+    container_name: sentinel-2
+    user: 1000:1000
+    ports:
+      - 26380:26379
+    command: redis-sentinel /usr/local/etc/redis/sentinel-2.conf
+    volumes:
+      - ./sentinel/sentinel-2:/usr/local/etc/redis
+      - ./data/:/data
+    environment:
+      - TZ=Asia/Taipei
+
+  sentinel-3:
+    image: redis:7.2.4
+    container_name: sentinel-3
+    user: 1000:1000
+    ports:
+      - 26381:26379
+    command: redis-sentinel /usr/local/etc/redis/sentinel-3.conf
+    volumes:
+      - ./sentinel/sentinel-3:/usr/local/etc/redis
+      - ./data/:/data
+    environment:
+      - TZ=Asia/Taipei
+
+networks:
+  default:
+    external: true
+    name: airflow_cluster
+
